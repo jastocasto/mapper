@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Map with OpenLayers</title>
+  <title>Follow Me</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.css">
   <style>
     body {
@@ -18,78 +18,35 @@
   </style>
 </head>
 <body>
-  <h1>OpenLayers Map with Customization</h1>
+  <h1>OpenLayers Map with Custom MapTiler Style</h1>
   <div id="map"></div>
 
   <!-- OpenLayers Library -->
   <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
 
-  <!-- Custom Script -->
   <script>
+    // Your MapTiler API Key
+    const maptilerApiKey = 'KxsUkyXYNvDKoMEtI3Nr';
+
+    // Your custom MapTiler style URL
+    const styleUrl = `https://api.maptiler.com/maps/63156a78-abfa-4e0d-9b07-b35d069f81aa/?key=${maptilerApiKey}`;
+
     // Create the OpenLayers map
     const map = new ol.Map({
       target: 'map',
       layers: [
-        // Adding a tile layer (OpenStreetMap)
+        // Use MapTiler custom style tiles
         new ol.layer.Tile({
           source: new ol.source.XYZ({
-            url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            url: `https://api.maptiler.com/tiles/{z}/{x}/{y}.png?key=${maptilerApiKey}`,
           }),
-        }),
-        // Customizable vector layer for POIs or other vector features
-        new ol.layer.Vector({
-          source: new ol.source.Vector(),
         }),
       ],
       view: new ol.View({
-        center: ol.proj.fromLonLat([0, 0]), // Center the map on [longitude, latitude]
-        zoom: 2, // Zoom level
+        center: ol.proj.fromLonLat([49.8671, 40.4093]), // Center the map on Baku, Azerbaijan
+        zoom: 12, // Zoom level (adjust as necessary)
       }),
     });
-
-    // Add a POI (Point of Interest) to the map
-    const poiFeature = new ol.Feature({
-      geometry: new ol.geom.Point(ol.proj.fromLonLat([2.2945, 48.8584])), // Eiffel Tower coordinates
-      name: 'Eiffel Tower',
-    });
-
-    const poiLayer = map.getLayers().item(1).getSource();
-    poiLayer.addFeature(poiFeature);
-
-    // Style for POIs (customize color, size, etc.)
-    poiFeature.setStyle(new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 10,
-        fill: new ol.style.Fill({
-          color: 'red',
-        }),
-        stroke: new ol.style.Stroke({
-          color: 'white',
-          width: 2,
-        }),
-      }),
-    }));
-
-    // Directions feature (showing a basic route)
-    const startPoint = ol.proj.fromLonLat([2.2945, 48.8584]); // Start point (Eiffel Tower)
-    const endPoint = ol.proj.fromLonLat([2.2950, 48.8590]); // End point (nearby location)
-
-    const lineFeature = new ol.Feature({
-      geometry: new ol.geom.LineString([startPoint, endPoint]),
-    });
-
-    // Style for the route
-    lineFeature.setStyle(new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: '#0000FF', // Blue color for the route
-        width: 4,
-      }),
-    }));
-
-    // Add the route to the vector layer
-    poiLayer.addFeature(lineFeature);
-
-    // Optional: Add more functionality, such as displaying direction info, etc.
   </script>
 </body>
 </html>
