@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapper</title>
+  <title>Custom Map with MapTiler</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.css">
   <style>
     body {
@@ -29,7 +29,7 @@
     const maptilerApiKey = 'KxsUkyXYNvDKoMEtI3Nr';
 
     // Your custom MapTiler style URL
-    const styleUrl = `https://api.maptiler.com/maps/63156a78-abfa-4e0d-9b07-b35d069f81aa/?key=${maptilerApiKey}`;
+    const styleUrl = `https://api.maptiler.com/maps/63156a78-abfa-4e0d-9b07-b35d069f81aa/style.json?key=${maptilerApiKey}`;
 
     // Create the OpenLayers map
     const map = new ol.Map({
@@ -39,12 +39,13 @@
         new ol.layer.Tile({
           source: new ol.source.XYZ({
             url: `https://api.maptiler.com/tiles/{z}/{x}/{y}.png?key=${maptilerApiKey}`,
+            crossOrigin: 'anonymous', // This should help with CORS issues
           }),
         }),
       ],
       view: new ol.View({
         center: ol.proj.fromLonLat([49.8671, 40.4093]), // Center the map on Baku, Azerbaijan
-        zoom: 12, // Zoom level (adjust as necessary)
+        zoom: 12, // Zoom level
       }),
     });
   </script>
